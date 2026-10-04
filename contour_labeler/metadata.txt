@@ -1,0 +1,20 @@
+[general]
+name=Contour_labeler
+qgisMinimumVersion=3.34
+qgisMaximumVersion=4.99
+description=To label contours with elevation in a cartographic fashion.
+version=0.1.0
+author=Mats Elfström
+email=mats.elfstrom@gmail.com
+about=To label contours with elevation in a cartographic fashion. Replace this with a longer description in English.
+tracker=https://github.com/matself/contour-labeler/issues
+repository=https://github.com/matself/contour-labeler
+homepage=https://github.com/matself/contour-labeler
+category=Vector
+icon=icon.svg
+tags=
+experimental=True
+deprecated=False
+license=GPL-2.0-or-later
+changelog=
+    0.1.0 - Initial version
