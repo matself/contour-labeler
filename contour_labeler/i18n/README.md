@@ -1,11 +1,15 @@
 # Translations
 
-Extract strings and compile translations (Qt Linguist tools required):
+Source strings are English. Swedish lives in `contour_labeler_sv.ts` and is shown
+automatically when QGIS runs with a Swedish locale (`plugin.py` loads
+`i18n/contour_labeler_<locale>.qm`).
+
+The `.ts` files are maintained by hand (the panel uses a small `_tr()` wrapper that
+`lupdate` does not recognise). After editing a `.ts`, compile it and commit the `.qm`
+too, so that CI-built packages contain the translation:
 
 ```bash
-pylupdate5 plugin.py provider.py algorithms/example_algorithm.py -ts i18n/contour_labeler_sv.ts
-lrelease i18n/contour_labeler_sv.ts
+pyside6-lrelease contour_labeler/i18n/contour_labeler_sv.ts -qm contour_labeler/i18n/contour_labeler_sv.qm
 ```
 
-`plugin.py` loads `i18n/contour_labeler_<locale>.qm` automatically.
-Source strings stay in English.
+To add a language, copy `contour_labeler_sv.ts`, change `language="sv"` and translate.

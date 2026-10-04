@@ -35,13 +35,14 @@ class ContourLabelerPlugin:
 
     def initGui(self):  # noqa: N802 (name required by QGIS)
         icon = QIcon(str(self.plugin_dir / "icon.svg"))
+        self.menu_name = "&" + self.tr(PLUGIN_NAME)
         self.action = QAction(icon, self.tr(PLUGIN_NAME), self.iface.mainWindow())
         self.action.triggered.connect(self.run)
         self.iface.addToolBarIcon(self.action)
-        self.iface.addPluginToMenu("&" + PLUGIN_NAME, self.action)
+        self.iface.addPluginToMenu(self.menu_name, self.action)
 
     def unload(self):
-        self.iface.removePluginMenu("&" + PLUGIN_NAME, self.action)
+        self.iface.removePluginMenu(self.menu_name, self.action)
         self.iface.removeToolBarIcon(self.action)
         self.action.deleteLater()
         self.action = None

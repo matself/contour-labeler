@@ -11,6 +11,7 @@ from qgis.core import (
     QgsVectorLayer,
     QgsVectorLayerSimpleLabeling,
 )
+from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtGui import QColor
 
 from .compat import DOUBLE_FIELD, SHOW_UPSIDE_DOWN_WHEN_ROTATION_DEFINED
@@ -30,7 +31,8 @@ def find_output_layer(project, crs=None):
 
 
 def create_output_layer(project, crs, text_format=None):
-    layer = QgsVectorLayer(f"Point?crs={crs.authid() or crs.toWkt()}", LAYER_NAME, "memory")
+    name = QCoreApplication.translate("ContourLabelerOutput", LAYER_NAME)
+    layer = QgsVectorLayer(f"Point?crs={crs.authid() or crs.toWkt()}", name, "memory")
     layer.dataProvider().addAttributes(
         [QgsField(ELEVATION_FIELD, DOUBLE_FIELD), QgsField(ROTATION_FIELD, DOUBLE_FIELD)]
     )

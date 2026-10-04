@@ -20,6 +20,10 @@ Labels go to a temporary layer called *Contour labels* with the fields `elev` an
 already styled (rotated label with a white collar). **Save output…** exports it to a permanent
 format, otherwise it is lost when the project is closed.
 
+### Languages
+
+The interface is English, with a Swedish translation that is used automatically when QGIS runs in Swedish. More languages: see `contour_labeler/i18n/README.md`.
+
 ### Options
 
 - **Smoothing distance** (metres, default 5): how far each side of the crossing the contour
