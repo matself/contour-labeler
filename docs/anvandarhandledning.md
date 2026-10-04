@@ -34,7 +34,7 @@ Klicka på pluginets ikon i verktygsfältet eller välj **Plugins ▸ Höjdkurvs
 
 ## Så avgörs etikettens riktning
 
-- **Texttoppen pekar åt det håll du ritade guidelinjen.** Rita därför alltid uppför. Ritar du nedför blir texten upp och ner.
+- **Kurvsiffrorna skrivs uppåt i sluttningen, det håll du ritade guidelinjen.** Rita därför alltid uppför. Ritar du nedför blir texten upp och ner.
 - Grundlinjen följer kurvans riktning vid korsningen. Det spelar ingen roll i vilken riktning kurvan en gång digitaliserades.
 - Är guidelinjen böjd används riktningen hos det segment som korsar kurvan, så du kan följa en brant sluttning med flera punkter.
 - Kurvor utan höjdvärde hoppas över.
