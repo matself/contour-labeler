@@ -109,8 +109,10 @@ class ContourLabelerDockWidget(QDockWidget):
         self.tangent_spin.setValue(core.DEFAULT_TANGENT_M)
         self.tangent_spin.setSuffix(" m")
         self.tangent_spin.setToolTip(
-            _tr("Distance each side of the crossing used to find the contour direction. "
-                    "Increase for jagged contours.")
+            _tr(
+                "Distance each side of the crossing used to find the contour direction. "
+                "Increase for jagged contours."
+            )
         )
         opt_form.addRow(_tr("Smoothing distance"), self.tangent_spin)
         layout.addWidget(options)
@@ -198,8 +200,9 @@ class ContourLabelerDockWidget(QDockWidget):
                 "Backspace removes the last point, Esc cancels."
             ))
         else:
-            self.hint.setText(_tr("Draw a guide line uphill; labels are placed where it "
-                                      "crosses the contours."))
+            self.hint.setText(
+                _tr("Draw a guide line uphill; labels are placed where it crosses the contours.")
+            )
 
     # --- drawing -------------------------------------------------------------
     def _on_draw_toggled(self, checked):
@@ -228,8 +231,9 @@ class ContourLabelerDockWidget(QDockWidget):
         points = [to_layer.transform(p) for p in canvas_points]
         labels = core.compute_ladder(layer, field, points, self._tangent_radius(layer))
         if not labels:
-            self.status.setText(_tr("No labels: the guide did not cross any contour "
-                                        "with an elevation value."))
+            self.status.setText(
+                _tr("No labels: the guide did not cross any contour with an elevation value.")
+            )
             return
 
         out = output.find_output_layer(project, layer.crs()) or output.create_output_layer(
