@@ -93,3 +93,13 @@ def test_guide_rubber_band_has_geometry():
     tool._redraw(QgsPointXY(5, 20))
     assert tool.band.asGeometry().length() > 0
     tool.cleanup()
+
+
+def test_output_has_halo_and_no_marker():
+    project = QgsProject.instance()
+    project.removeAllMapLayers()
+    crs = QgsVectorLayer("Point?crs=EPSG:3006", "x", "memory").crs()
+    layer = output.create_output_layer(project, crs)
+    fmt = output.get_text_format(layer)
+    assert fmt.buffer().enabled()
+    assert layer.renderer().type() == "nullSymbol"

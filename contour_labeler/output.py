@@ -4,9 +4,10 @@ from qgis.core import (
     QgsFeature,
     QgsField,
     QgsGeometry,
-    QgsMarkerSymbol,
+    QgsNullSymbolRenderer,
     QgsPalLayerSettings,
     QgsProperty,
+    QgsTextBufferSettings,
     QgsTextFormat,
     QgsVectorLayer,
     QgsVectorLayerSimpleLabeling,
@@ -83,6 +84,12 @@ def default_text_format():
     fmt = QgsTextFormat()
     fmt.setColor(QColor("black"))
     fmt.setSize(9)
+    # White halo that hides the contour behind the text. Adjust it in the font panel (Buffer).
+    buffer = QgsTextBufferSettings()
+    buffer.setEnabled(True)
+    buffer.setSize(1.2)
+    buffer.setColor(QColor("white"))
+    fmt.setBuffer(buffer)
     return fmt
 
 
@@ -102,8 +109,5 @@ def _apply_style(layer, text_format=None):
     layer.setLabeling(QgsVectorLayerSimpleLabeling(settings))
     layer.setLabelsEnabled(True)
 
-    # White collar that knocks out the contour behind the label.
-    symbol = QgsMarkerSymbol.createSimple(
-        {"name": "circle", "color": "white", "size": "5", "outline_style": "no"}
-    )
-    layer.renderer().setSymbol(symbol)
+    # Only the labels are shown, not the points themselves.
+    layer.setRenderer(QgsNullSymbolRenderer())

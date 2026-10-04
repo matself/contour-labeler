@@ -17,7 +17,7 @@ Compatible with QGIS 3.34 up to 4.99 (Qt5 and Qt6).
    from the last guide. Draw another one, as many as you like.
 
 Labels go to a temporary layer called *Contour labels* with the fields `elev` and `rotation`,
-already styled (rotated label with a white collar). **Save output…** exports it to a permanent
+already styled (rotated labels with a white halo, adjustable under *Buffer* in the font panel). **Save output…** exports it to a permanent
 format, otherwise it is lost when the project is closed.
 
 ### Languages
