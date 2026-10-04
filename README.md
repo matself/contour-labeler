@@ -8,7 +8,7 @@ Compatible with QGIS 3.34 up to 4.99 (Qt5 and Qt6).
 ## How it works
 
 1. Open the **Contour Labeler** panel (toolbar icon or *Plugins* menu).
-2. Choose the contour layer. The elevation field is guessed (`elev`, `z`, `height`, ...) and can be changed.
+2. Choose the contour layer. The elevation field is guessed (`elev`, `z`, `height`, ...) and can be changed. The **Label font** button opens the full QGIS text format panel (font, size, colour, buffer) and updates the output layer live.
 3. Click **Draw label ladder** and click uphill across the contours. Right-click or Enter finishes.
    Backspace removes the last point, Esc cancels.
 4. A label is placed at every crossing. Its baseline follows the contour and the top of the

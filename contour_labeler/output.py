@@ -29,14 +29,14 @@ def find_output_layer(project, crs=None):
     return None
 
 
-def create_output_layer(project, crs):
+def create_output_layer(project, crs, text_format=None):
     layer = QgsVectorLayer(f"Point?crs={crs.authid() or crs.toWkt()}", LAYER_NAME, "memory")
     layer.dataProvider().addAttributes(
         [QgsField(ELEVATION_FIELD, DOUBLE_FIELD), QgsField(ROTATION_FIELD, DOUBLE_FIELD)]
     )
     layer.updateFields()
     layer.setCustomProperty(MARKER_PROPERTY, True)
-    _apply_style(layer)
+    _apply_style(layer, text_format)
     project.addMapLayer(layer)
     return layer
 
@@ -62,17 +62,36 @@ def remove_labels(layer, feature_ids):
     layer.triggerRepaint()
 
 
-def _apply_style(layer):
+def get_text_format(layer):
+    labeling = layer.labeling()
+    return QgsTextFormat(labeling.settings().format()) if labeling else default_text_format()
+
+
+def set_text_format(layer, text_format):
+    labeling = layer.labeling()
+    if labeling is None:
+        return
+    settings = QgsPalLayerSettings(labeling.settings())
+    settings.setFormat(text_format)
+    layer.setLabeling(QgsVectorLayerSimpleLabeling(settings))
+    layer.triggerRepaint()
+
+
+def default_text_format():
+    fmt = QgsTextFormat()
+    fmt.setColor(QColor("black"))
+    fmt.setSize(9)
+    return fmt
+
+
+def _apply_style(layer, text_format=None):
     settings = QgsPalLayerSettings()
     settings.enabled = True
     settings.fieldName = ELEVATION_FIELD
     settings.placement = Qgis.LabelPlacement.OverPoint
     settings.upsidedownLabels = SHOW_UPSIDE_DOWN_WHEN_ROTATION_DEFINED
 
-    fmt = QgsTextFormat()
-    fmt.setColor(QColor("black"))
-    fmt.setSize(9)
-    settings.setFormat(fmt)
+    settings.setFormat(text_format or default_text_format())
 
     props = settings.dataDefinedProperties()
     props.setProperty(QgsPalLayerSettings.Property.LabelRotation,

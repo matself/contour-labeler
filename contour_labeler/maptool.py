@@ -1,5 +1,5 @@
 """Map tool for drawing an uphill guide line."""
-from qgis.core import Qgis, QgsPointXY
+from qgis.core import Qgis, QgsGeometry, QgsPointXY
 from qgis.gui import QgsMapTool, QgsRubberBand
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtGui import QColor
@@ -22,13 +22,13 @@ class GuideTool(QgsMapTool):
         self.setCursor(Qt.CursorShape.CrossCursor)
 
     def _redraw(self, cursor=None):
-        self.band.reset(Qgis.GeometryType.Line)
-        for p in self.points:
-            self.band.addPoint(p, False)
-        if cursor is not None and self.points:
-            self.band.addPoint(cursor, False)
-        self.band.updatePosition()
-        self.band.update()
+        pts = list(self.points)
+        if cursor is not None and pts:
+            pts.append(QgsPointXY(cursor))
+        if len(pts) < 2:
+            self.band.reset(Qgis.GeometryType.Line)
+            return
+        self.band.setToGeometry(QgsGeometry.fromPolylineXY(pts), None)
 
     def _clear(self):
         self.points = []

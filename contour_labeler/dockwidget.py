@@ -3,9 +3,12 @@ from qgis.core import (
     Qgis,
     QgsCoordinateTransform,
     QgsProject,
+    QgsReadWriteContext,
+    QgsSettings,
+    QgsTextFormat,
     QgsUnitTypes,
 )
-from qgis.gui import QgsCollapsibleGroupBox, QgsFieldComboBox, QgsMapLayerComboBox
+from qgis.gui import QgsCollapsibleGroupBox, QgsFieldComboBox, QgsFontButton, QgsMapLayerComboBox
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtWidgets import (
     QDockWidget,
@@ -17,6 +20,7 @@ from qgis.PyQt.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+from qgis.PyQt.QtXml import QDomDocument
 
 from . import core, output
 from .maptool import GuideTool
@@ -60,6 +64,15 @@ class ContourLabelerDockWidget(QDockWidget):
             self.field_combo.setFilters(QgsFieldProxyModel.Numeric)
         form.addRow(_tr("Contour layer"), self.layer_combo)
         form.addRow(_tr("Elevation field"), self.field_combo)
+        self.font_button = QgsFontButton()
+        self.font_button.setDialogTitle(_tr("Label font"))
+        self.font_button.setMapCanvas(self.canvas)
+        try:
+            self.font_button.setMode(QgsFontButton.Mode.ModeTextRenderer)
+        except AttributeError:
+            self.font_button.setMode(QgsFontButton.ModeTextRenderer)
+        self.font_button.setTextFormat(self._initial_text_format())
+        form.addRow(_tr("Label font"), self.font_button)
         layout.addLayout(form)
 
         # --- Drawing --------------------------------------------------------
@@ -108,6 +121,7 @@ class ContourLabelerDockWidget(QDockWidget):
         self.layer_combo.layerChanged.connect(self._on_layer_changed)
         self.field_combo.fieldChanged.connect(self._on_field_changed)
         self.draw_button.toggled.connect(self._on_draw_toggled)
+        self.font_button.changed.connect(self._on_font_changed)
         self.undo_button.clicked.connect(self.undo_last)
         self.save_button.clicked.connect(self._save_output)
         QgsProject.instance().layersWillBeRemoved.connect(self._on_layers_removed)
@@ -143,6 +157,26 @@ class ContourLabelerDockWidget(QDockWidget):
         if layer is not None and field:
             QgsProject.instance().writeEntry(SCOPE, f"field/{layer.id()}", field)
         self._update_state()
+
+    def _initial_text_format(self):
+        existing = output.find_output_layer(QgsProject.instance())
+        if existing is not None:
+            return output.get_text_format(existing)
+        xml = QgsSettings().value(f"{SCOPE}/text_format", "")
+        doc = QDomDocument()
+        if xml and doc.setContent(xml):
+            fmt = QgsTextFormat()
+            fmt.readXml(doc.documentElement(), QgsReadWriteContext())
+            return fmt
+        return output.default_text_format()
+
+    def _on_font_changed(self):
+        doc = QDomDocument()
+        doc.appendChild(self.font_button.textFormat().writeXml(doc, QgsReadWriteContext()))
+        QgsSettings().setValue(f"{SCOPE}/text_format", doc.toString())
+        layer = output.find_output_layer(QgsProject.instance())
+        if layer is not None:
+            output.set_text_format(layer, self.font_button.textFormat())
 
     def _on_layers_removed(self, layer_ids):
         self.undo_stack = [e for e in self.undo_stack if e[0] not in layer_ids]
@@ -199,7 +233,7 @@ class ContourLabelerDockWidget(QDockWidget):
             return
 
         out = output.find_output_layer(project, layer.crs()) or output.create_output_layer(
-            project, layer.crs()
+            project, layer.crs(), self.font_button.textFormat()
         )
         ids = output.add_labels(out, labels)
         self.undo_stack.append((out.id(), ids))
