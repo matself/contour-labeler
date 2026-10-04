@@ -7,7 +7,7 @@ from qgis.PyQt.QtGui import QIcon
 from .compat import QAction
 from .dockwidget import ContourLabelerDockWidget
 
-PLUGIN_NAME = "Contour_labeler"
+PLUGIN_NAME = "Contour Labeler"
 
 
 class ContourLabelerPlugin:
@@ -46,6 +46,7 @@ class ContourLabelerPlugin:
         self.action.deleteLater()
         self.action = None
         if self.dock is not None:
+            self.dock.cleanup()
             self.iface.removeDockWidget(self.dock)
             self.dock.deleteLater()
             self.dock = None
@@ -55,6 +56,6 @@ class ContourLabelerPlugin:
 
     def run(self):
         if self.dock is None:
-            self.dock = ContourLabelerDockWidget(self.iface.mainWindow())
+            self.dock = ContourLabelerDockWidget(self.iface, self.iface.mainWindow())
             self.iface.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dock)
         self.dock.setVisible(not self.dock.isVisible())
