@@ -7,7 +7,6 @@ Handledningen gäller version 0.1.1 och QGIS 3.34 eller senare (inklusive QGIS 4
 ## Det här behöver du
 
 - Ett **linjelager med höjdkurvor** där varje kurva har ett numeriskt höjdvärde i ett fält (till exempel `elev`, `z` eller `height`).
-- Inget annat. Du behöver inget separat guidelager.
 
 ## Öppna panelen
 
