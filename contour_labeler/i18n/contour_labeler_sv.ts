@@ -96,4 +96,11 @@
         <translation>Höjdkurvsetiketter</translation>
     </message>
 </context>
+<context>
+    <name>ContourLabelerPlugin</name>
+    <message>
+        <source>Help</source>
+        <translation>Hjälp</translation>
+    </message>
+</context>
 </TS>

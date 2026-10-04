@@ -22,6 +22,10 @@ Labels go to a temporary layer called *Contour labels* with the fields `elev` an
 already styled (rotated labels with a white halo, adjustable under *Buffer* in the font panel). **Save output…** exports it to a permanent
 format, otherwise it is lost when the project is closed.
 
+### Help
+
+*Plugins > Contour Labeler > Help* opens this README (or the Swedish user guide when QGIS runs in Swedish).
+
 ### Languages
 
 The interface is English, with a Swedish translation that is used automatically when QGIS runs in Swedish. More languages: see `contour_labeler/i18n/README.md`.
@@ -45,7 +49,7 @@ New-Item -ItemType Junction `
 Run the tests with the Python of an installed QGIS (`python-qgis.bat -m pytest`) and build an installable zip:
 
 ```bash
-python scripts/build_zip.py   # -> dist/contour_labeler-0.1.1.zip
+python scripts/build_zip.py   # -> dist/contour_labeler-0.1.2.zip
 ```
 
 Code layout: `core.py` (label geometry, no GUI), `output.py` (output layer),

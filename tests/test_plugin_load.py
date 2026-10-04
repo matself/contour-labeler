@@ -50,3 +50,47 @@ def test_first_click_shows_dock_then_toggles():
     plugin.run()
     assert plugin.dock.isVisible()
     plugin.dock.cleanup()
+
+
+def test_help_entry_in_menu_opens_localised_url(monkeypatch):
+    from qgis.PyQt.QtGui import QDesktopServices
+    from qgis.PyQt.QtWidgets import QMainWindow
+
+    from contour_labeler import plugin as plugin_module
+
+    opened = []
+    monkeypatch.setattr(QDesktopServices, "openUrl", lambda url: opened.append(url.toString()))
+
+    class Iface:
+        def __init__(self):
+            self.menu = []
+            self.window = QMainWindow()
+
+        def mainWindow(self):
+            return self.window
+
+        def addToolBarIcon(self, action):
+            pass
+
+        def removeToolBarIcon(self, action):
+            pass
+
+        def addPluginToMenu(self, menu, action):
+            self.menu.append(action)
+
+        def removePluginMenu(self, menu, action):
+            self.menu.remove(action)
+
+    iface = Iface()
+    plugin = plugin_module.ContourLabelerPlugin(iface)
+    plugin.initGui()
+    assert len(iface.menu) == 2  # the tool and its Help entry
+
+    plugin.locale = "en"
+    plugin.help_action.trigger()
+    plugin.locale = "sv"
+    plugin.help_action.trigger()
+    assert opened == [plugin_module.HELP_URL, plugin_module.HELP_URLS["sv"]]
+
+    plugin.unload()
+    assert iface.menu == []

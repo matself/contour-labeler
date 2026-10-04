@@ -1,13 +1,17 @@
 """Main plugin class for Contour_labeler."""
 from pathlib import Path
 
-from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator
-from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator, QUrl
+from qgis.PyQt.QtGui import QDesktopServices, QIcon
 
 from .compat import QAction
 from .dockwidget import ContourLabelerDockWidget
 
 PLUGIN_NAME = "Contour Labeler"
+HELP_URL = "https://github.com/matself/contour-labeler#readme"
+HELP_URLS = {
+    "sv": "https://github.com/matself/contour-labeler/blob/main/docs/anvandarhandledning.md",
+}
 
 
 class ContourLabelerPlugin:
@@ -17,13 +21,15 @@ class ContourLabelerPlugin:
         self.iface = iface
         self.plugin_dir = Path(__file__).parent
         self.action = None
+        self.help_action = None
+        self.locale = "en"
         self.dock = None
         self.translator = None
         self._load_translation()
 
     def _load_translation(self):
-        locale = QSettings().value("locale/userLocale", "en")[:2]
-        path = self.plugin_dir / "i18n" / f"contour_labeler_{locale}.qm"
+        self.locale = QSettings().value("locale/userLocale", "en")[:2]
+        path = self.plugin_dir / "i18n" / f"contour_labeler_{self.locale}.qm"
         if path.exists():
             self.translator = QTranslator()
             self.translator.load(str(path))
@@ -40,9 +46,15 @@ class ContourLabelerPlugin:
         self.action.triggered.connect(self.run)
         self.iface.addToolBarIcon(self.action)
         self.iface.addPluginToMenu(self.menu_name, self.action)
+        self.help_action = QAction(self.tr("Help"), self.iface.mainWindow())
+        self.help_action.triggered.connect(self.open_help)
+        self.iface.addPluginToMenu(self.menu_name, self.help_action)
 
     def unload(self):
         self.iface.removePluginMenu(self.menu_name, self.action)
+        self.iface.removePluginMenu(self.menu_name, self.help_action)
+        self.help_action.deleteLater()
+        self.help_action = None
         self.iface.removeToolBarIcon(self.action)
         self.action.deleteLater()
         self.action = None
@@ -54,6 +66,9 @@ class ContourLabelerPlugin:
         if self.translator is not None:
             QCoreApplication.removeTranslator(self.translator)
             self.translator = None
+
+    def open_help(self):
+        QDesktopServices.openUrl(QUrl(HELP_URLS.get(self.locale, HELP_URL)))
 
     def run(self):
         if self.dock is None:
