@@ -59,4 +59,8 @@ class ContourLabelerPlugin:
         if self.dock is None:
             self.dock = ContourLabelerDockWidget(self.iface, self.iface.mainWindow())
             self.iface.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dock)
-        self.dock.setVisible(not self.dock.isVisible())
+            self.dock.show()  # a new dock is already visible; do not toggle it away again
+        else:
+            self.dock.setVisible(not self.dock.isVisible())
+        if self.dock.isVisible():
+            self.dock.raise_()

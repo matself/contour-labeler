@@ -43,7 +43,7 @@ New-Item -ItemType Junction `
 Run the tests with the Python of an installed QGIS (`python-qgis.bat -m pytest`) and build an installable zip:
 
 ```bash
-python scripts/build_zip.py   # -> dist/contour_labeler-0.1.0.zip
+python scripts/build_zip.py   # -> dist/contour_labeler-0.1.1.zip
 ```
 
 Code layout: `core.py` (label geometry, no GUI), `output.py` (output layer),
