@@ -3,7 +3,7 @@ name=Contour Labeler
 qgisMinimumVersion=3.34
 qgisMaximumVersion=4.99
 description=Place slope-aligned elevation labels on contours along guide lines drawn uphill.
-version=0.1.2
+version=0.1.3
 author=Mats Elfström
 email=mats.elfstrom@gmail.com
 about=Draw a guide line uphill across your contours and get elevation labels placed at every crossing. The text baseline follows the contour and the top of the text points uphill, regardless of the direction the contour was digitised in. Each guide can be undone, and the label font and halo are set with the standard QGIS text format panel. The interface is in English with a Swedish translation. Works on Windows, Linux and macOS with plain QGIS 3.34 or later (including QGIS 4); no external dependencies. Labels are written to a temporary layer that you export to a permanent format.
@@ -17,6 +17,7 @@ experimental=True
 deprecated=False
 license=GPL-2.0-or-later
 changelog=
+    0.1.3 - Move the label font button into Options and show a larger sample on it
     0.1.2 - Add a Help entry to the plugin menu that opens the user guide (Swedish guide for Swedish QGIS)
     0.1.1 - Fix: the panel now opens on the first click on the toolbar icon
     0.1.0 - First release

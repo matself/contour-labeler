@@ -72,7 +72,12 @@ class ContourLabelerDockWidget(QDockWidget):
         except AttributeError:
             self.font_button.setMode(QgsFontButton.ModeTextRenderer)
         self.font_button.setTextFormat(self._initial_text_format())
-        form.addRow(_tr("Label font"), self.font_button)
+        # The preview inside the button follows the widget font, not the label size.
+        preview_font = self.font_button.font()
+        preview_font.setPointSize(18)
+        self.font_button.setFont(preview_font)
+        self.font_button.setText("120")  # sample text shown in the chosen font
+        self.font_button.setMinimumHeight(48)
         layout.addLayout(form)
 
         # --- Drawing --------------------------------------------------------
@@ -104,6 +109,7 @@ class ContourLabelerDockWidget(QDockWidget):
         options = QgsCollapsibleGroupBox(_tr("Options"))
         options.setCollapsed(True)
         opt_form = QFormLayout(options)
+        opt_form.addRow(_tr("Label font"), self.font_button)
         self.tangent_spin = QDoubleSpinBox()
         self.tangent_spin.setRange(0.1, 1000)
         self.tangent_spin.setValue(core.DEFAULT_TANGENT_M)

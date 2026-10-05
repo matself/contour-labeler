@@ -16,7 +16,7 @@ Klicka på pluginets ikon i verktygsfältet eller välj **Plugins ▸ Höjdkurvs
 
 1. **Välj höjdkurvlager.** Rullgardinen visar alla linjelager i projektet.
 2. **Kontrollera höjdfältet.** Pluginet gissar fältet (`elev`, `ele`, `z`, `height`, `hojd`, `höjd`, `altitude`, `value`). Är det fel väljer du rätt fält själv. Bara numeriska fält visas.
-3. **Välj typsnitt** med knappen *Typsnitt för etiketter* (se nedan).
+3. Vill du ändra typsnitt eller halo: öppna **Inställningar** längst ned i panelen (se nedan). Standardinställningarna fungerar för de flesta kartor.
 4. Klicka på **Rita etikettstege**. Knappen blir intryckt och markören ändras till ett hårkors.
 5. **Rita guidelinjen uppför:** vänsterklicka där linjen ska börja, klicka vidare över kurvorna och avsluta med **högerklick** eller **Enter**. En röd linje visar vad du ritar.
 6. Etiketterna läggs ut direkt. Statusraden under knapparna säger hur många som lades till.
@@ -48,7 +48,7 @@ Resultatet beror på hur du drar guidelinjen, så missnöjda ritar bara om:
 
 ## Typsnitt och halo
 
-Knappen *Typsnitt för etiketter* öppnar QGIS vanliga textformatpanel: typsnitt, storlek, färg, **buffert** och mer. Ändringar slår igenom direkt på utlagret, och valet minns mellan sessioner.
+Knappen *Typsnitt för etiketter*, som ligger under **Inställningar** i panelen, öppnar QGIS vanliga textformatpanel: typsnitt, storlek, färg, **buffert** och mer. Ändringar slår igenom direkt på utlagret, och valet minns mellan sessioner.
 
 Som standard har texten en **vit halo** (buffert, 1,2 mm) som döljer höjdkurvan bakom siffran. Har kartan en annan bakgrundsfärg ställer du in halons färg under **Buffer**, gärna med pipetten så att du tar färgen direkt från kartan. Du kan också stänga av bufferten eller göra den smalare.
 
@@ -70,7 +70,7 @@ Etiketterna hamnar i ett punktlager som heter **Höjdkurvsetiketter**:
 
 ## Inställningar
 
-Under **Inställningar** finns **Utjämningsavstånd** (standard 5 m): hur långt åt varje håll från korsningen som kurvans riktning mäts. Ökar du värdet blir etiketterna lugnare på ojämna kurvor. Minska det för kurvor med skarpa svängar.
+Under **Inställningar** (fäll ut längst ned i panelen) finns *Typsnitt för etiketter* (se ovan) och **Utjämningsavstånd** (standard 5 m): hur långt åt varje håll från korsningen som kurvans riktning mäts. Ökar du värdet blir etiketterna lugnare på ojämna kurvor. Minska det för kurvor med skarpa svängar.
 
 ## Tips
 
